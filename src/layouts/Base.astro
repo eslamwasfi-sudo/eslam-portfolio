@@ -1,0 +1,108 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { ui, type Lang } from '../i18n/ui';
+import { site, url, switchLangPath } from '../lib/site';
+// Preload the fonts used above the fold so text doesn't jump when they arrive.
+import plexAr400 from '@fontsource/ibm-plex-sans-arabic/files/ibm-plex-sans-arabic-arabic-400-normal.woff2?url';
+import plexAr700 from '@fontsource/ibm-plex-sans-arabic/files/ibm-plex-sans-arabic-arabic-700-normal.woff2?url';
+import grotesk from '@fontsource-variable/space-grotesk/files/space-grotesk-latin-wght-normal.woff2?url';
+
+interface Props {
+  lang: Lang;
+  title?: string;
+  description?: string;
+  /** Absolute or base-relative image URL for social sharing. */
+  ogImage?: string;
+  ogType?: 'website' | 'article';
+}
+
+const { lang, title, description, ogImage, ogType = 'website' } = Astro.props;
+const s = ui[lang];
+const other: Lang = lang === 'ar' ? 'en' : 'ar';
+const preloadFonts = lang === 'ar' ? [plexAr700, plexAr400, grotesk] : [grotesk];
+const pageTitle = title ? `${title} — ${s.name}` : s.metaTitle;
+const desc = description ?? s.metaDescription;
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const altHref = (l: Lang) => new URL(switchLangPath(Astro.url.pathname, l), Astro.site).href;
+const og = new URL(ogImage ?? url('og-image.jpg'), Astro.site).href;
+
+const personLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: site.name_en,
+  alternateName: site.name_ar,
+  jobTitle: ['Art Director', 'Senior Graphic Designer', 'AI Creative Director'],
+  address: { '@type': 'PostalAddress', addressCountry: 'EG' },
+  areaServed: ['EG', 'SA', 'AE', 'KW', 'QA', 'BH', 'OM'],
+  url: new URL(url(`${lang}/`), Astro.site).href,
+  email: `mailto:${site.contact.email}`,
+  sameAs: [site.contact.instagram, site.contact.behance],
+};
+---
+<!doctype html>
+<html lang={lang} dir={s.dir}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{pageTitle}</title>
+    {preloadFonts.map((f) => <link rel="preload" href={f} as="font" type="font/woff2" crossorigin />)}
+    <meta name="description" content={desc} />
+    <meta name="theme-color" content="#0b0b0c" />
+    <meta name="author" content={site.name_en} />
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang={lang} href={canonical} />
+    <link rel="alternate" hreflang={other} href={altHref(other)} />
+    <link rel="alternate" hreflang="x-default" href={altHref('ar')} />
+    <link rel="icon" href={url('favicon.svg')} type="image/svg+xml" />
+    <link rel="sitemap" href={url('sitemap-index.xml')} />
+
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content={s.name} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={desc} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={og} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={s.metaTitle} />
+    <meta property="og:locale" content={s.locale} />
+    <meta property="og:locale:alternate" content={ui[other].locale} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={desc} />
+    <meta name="twitter:image" content={og} />
+    <script type="application/ld+json" set:html={JSON.stringify(personLd)} />
+    <slot name="head" />
+    <script is:inline>document.documentElement.classList.add('js');</script>
+  </head>
+  <body>
+    <a class="skip" href="#main">{s.skip}</a>
+    <Header lang={lang} />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer lang={lang} />
+    <script>
+      // Fade/slide elements in as they enter the viewport.
+      const els = document.querySelectorAll<HTMLElement>('[data-reveal]');
+      if ('IntersectionObserver' in window) {
+        const io = new IntersectionObserver(
+          (entries) => {
+            for (const e of entries) {
+              if (e.isIntersecting) {
+                e.target.classList.add('is-in');
+                io.unobserve(e.target);
+              }
+            }
+          },
+          { rootMargin: '0px 0px -8% 0px', threshold: 0.08 },
+        );
+        els.forEach((el) => io.observe(el));
+      } else {
+        els.forEach((el) => el.classList.add('is-in'));
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,98 @@
+---
+import ProjectCard from './ProjectCard.astro';
+import { ui, categories, type Lang } from '../i18n/ui';
+import { projects } from '../lib/site';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const s = ui[lang];
+const used = categories.filter((c) => projects.some((p) => p.category === c));
+---
+<section class="section" id="work">
+  <div class="container">
+    <div class="section-head" data-reveal>
+      <p class="kicker">{s.work.kicker}</p>
+      <h2 class="h-section">{s.work.title}</h2>
+    </div>
+
+    <div class="filters" role="group" aria-label={s.work.title} data-reveal>
+      <button type="button" class="chip" aria-pressed="true" data-filter="all">
+        {s.work.all} <span class="count">{projects.length}</span>
+      </button>
+      {used.map((c) => (
+        <button type="button" class="chip" aria-pressed="false" data-filter={c}>
+          {s.categories[c]} <span class="count">{projects.filter((p) => p.category === c).length}</span>
+        </button>
+      ))}
+    </div>
+
+    <ul class="grid" data-grid>
+      {projects.map((p, i) => <ProjectCard project={p} lang={lang} index={i} />)}
+    </ul>
+    <p class="empty" hidden data-empty>{s.work.empty}</p>
+  </div>
+</section>
+
+<style>
+  .filters {
+    display: flex; gap: 0.5rem; margin-bottom: clamp(2rem, 5vw, 3.5rem);
+    overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch;
+    margin-inline: calc(var(--gutter) * -1); padding-inline: var(--gutter);
+  }
+  .filters::-webkit-scrollbar { display: none; }
+  .chip {
+    flex: none; display: inline-flex; align-items: center; gap: 0.5rem;
+    min-height: 2.75rem; padding: 0.5rem 1.1rem; border-radius: 999px;
+    background: transparent; border: 1px solid var(--line); color: var(--muted);
+    white-space: nowrap; transition: all 0.35s var(--ease);
+  }
+  .chip:hover { color: var(--text); border-color: rgba(242, 239, 233, 0.35); }
+  .chip[aria-pressed='true'] { background: var(--text); color: var(--bg); border-color: var(--text); }
+  .count { font-size: 0.75em; opacity: 0.6; font-variant-numeric: tabular-nums; }
+  .grid {
+    list-style: none; margin: 0; padding: 0;
+    display: grid; gap: clamp(2.5rem, 5vw, 4rem) clamp(1.25rem, 3vw, 2.5rem);
+  }
+  @media (min-width: 860px) {
+    .grid { grid-template-columns: repeat(2, 1fr); }
+    /* Stagger the second column for an editorial rhythm */
+    .grid:not(.filtered) > :global(li:nth-child(even)) { margin-top: clamp(2rem, 6vw, 6rem); }
+  }
+  .empty { color: var(--muted); }
+  .grid > :global(li.fade) { animation: cardIn 0.7s var(--ease) both; }
+  @keyframes cardIn { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+</style>
+
+<script>
+  const grid = document.querySelector<HTMLElement>('[data-grid]')!;
+  const chips = document.querySelectorAll<HTMLButtonElement>('[data-filter]');
+  const cards = grid.querySelectorAll<HTMLElement>('li[data-category]');
+  const empty = document.querySelector<HTMLElement>('[data-empty]')!;
+
+  function apply(filter: string, updateHash = true) {
+    let shown = 0;
+    chips.forEach((c) => c.setAttribute('aria-pressed', String(c.dataset.filter === filter)));
+    cards.forEach((card) => {
+      const show = filter === 'all' || card.dataset.category === filter;
+      card.hidden = !show;
+      if (show) {
+        shown++;
+        card.classList.add('is-in');
+        card.classList.remove('fade');
+        void card.offsetWidth;
+        card.classList.add('fade');
+      }
+    });
+    grid.classList.toggle('filtered', filter !== 'all');
+    empty.hidden = shown > 0;
+    if (updateHash) history.replaceState(null, '', filter === 'all' ? '#work' : `#work/${filter}`);
+  }
+
+  chips.forEach((c) => c.addEventListener('click', () => apply(c.dataset.filter!)));
+  // Deep links like /en/#work/ai-video open the grid already filtered.
+  const m = location.hash.match(/^#work\/(.+)$/);
+  if (m && [...chips].some((c) => c.dataset.filter === m[1])) {
+    apply(m[1], false);
+    document.getElementById('work')?.scrollIntoView();
+  }
+</script>

@@ -1,0 +1,84 @@
+---
+// YouTube / Vimeo are shown as a lightweight poster + play button and only load the
+// real player when tapped (keeps the page fast). Local mp4s are short muted loops that
+// start playing only when scrolled into view.
+import Img from './Img.astro';
+import { parseVideo } from '../lib/site';
+
+interface Props { video: string; poster: string; title: string; playLabel: string }
+const { video, poster, title, playLabel } = Astro.props;
+const v = parseVideo(video);
+---
+{v && (
+  <div class="player">
+    {v.kind === 'mp4' ? (
+      <video
+        data-lazy-loop
+        muted
+        loop
+        playsinline
+        preload="none"
+        aria-label={title}
+      >
+        <source data-src={v.src} type="video/mp4" />
+      </video>
+      <div class="loop-poster" aria-hidden="true"><Img src={poster} alt="" sizes="(min-width: 1200px) 1200px, 100vw" /></div>
+    ) : (
+      <button class="facade" type="button" data-embed={v.embed} data-title={title} aria-label={`${playLabel}: ${title}`}>
+        <Img src={poster} alt="" sizes="(min-width: 1200px) 1200px, 100vw" />
+        <span class="play" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z" fill="currentColor" /></svg>
+        </span>
+      </button>
+    )}
+  </div>
+)}
+
+<style>
+  .player { position: relative; aspect-ratio: 16 / 9; border-radius: var(--radius); overflow: hidden; background: #000; }
+  .player :global(iframe), .player video, .facade, .loop-poster { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .player video { object-fit: cover; z-index: 1; opacity: 0; transition: opacity 0.8s var(--ease); }
+  .player video.playing { opacity: 1; }
+  .facade { padding: 0; background: none; }
+  .facade :global(img), .loop-poster :global(img) { width: 100%; height: 100%; object-fit: cover; }
+  .facade :global(img) { transition: transform 1s var(--ease), filter 0.6s var(--ease); filter: brightness(0.75); }
+  .facade:hover :global(img) { transform: scale(1.03); filter: brightness(0.9); }
+  .play {
+    position: absolute; inset: 0; margin: auto; width: clamp(4.5rem, 10vw, 6.5rem); aspect-ratio: 1;
+    display: grid; place-items: center; border-radius: 50%;
+    background: var(--accent); color: var(--accent-ink);
+    transition: transform 0.5s var(--ease);
+  }
+  .play svg { width: 40%; height: 40%; margin-inline-start: 6%; }
+  :global(html[dir='rtl']) .play svg { margin-inline-start: 0; margin-inline-end: 6%; }
+  .facade:hover .play { transform: scale(1.08); }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('.facade[data-embed]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const iframe = document.createElement('iframe');
+      iframe.src = btn.dataset.embed!;
+      iframe.title = btn.dataset.title ?? '';
+      iframe.allow = 'autoplay; fullscreen; picture-in-picture; encrypted-media';
+      iframe.allowFullscreen = true;
+      btn.replaceWith(iframe);
+    });
+  });
+
+  const loops = document.querySelectorAll<HTMLVideoElement>('video[data-lazy-loop]');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const io = new IntersectionObserver((entries) => {
+    for (const e of entries) {
+      const v = e.target as HTMLVideoElement;
+      if (e.isIntersecting) {
+        const source = v.querySelector<HTMLSourceElement>('source[data-src]');
+        if (source) { source.src = source.dataset.src!; source.removeAttribute('data-src'); v.load(); }
+        if (!reduce) v.play().then(() => v.classList.add('playing')).catch(() => {});
+      } else {
+        v.pause();
+      }
+    }
+  }, { rootMargin: '200px' });
+  loops.forEach((v) => io.observe(v));
+</script>

@@ -1,0 +1,58 @@
+---
+import { ui, type Lang } from '../i18n/ui';
+import { site } from '../lib/site';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const s = ui[lang].contact;
+const c = site.contact;
+const wa = `https://wa.me/${c.whatsapp.replace(/\D/g, '')}?text=${encodeURIComponent(s.whatsappMsg)}`;
+const handle = (u: string) => u.replace(/\/$/, '').split('/').pop();
+---
+<section class="section contact" id="contact">
+  <div class="container">
+    <p class="kicker" data-reveal>{s.kicker}</p>
+    <h2 class="title" data-reveal>{s.title}</h2>
+    <p class="sub" data-reveal>{s.sub}</p>
+
+    <div class="primary" data-reveal>
+      <a class="btn btn-primary wa" href={wa} target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12.04 2a9.9 9.9 0 0 0-8.5 15l-1.4 5.1 5.2-1.4A9.9 9.9 0 1 0 12.04 2Zm0 18.1a8.2 8.2 0 0 1-4.2-1.15l-.3-.18-3.1.8.83-3-.2-.31a8.2 8.2 0 1 1 6.97 3.84Zm4.5-6.14c-.25-.12-1.46-.72-1.69-.8-.23-.08-.39-.12-.55.12-.17.25-.64.8-.78.97-.14.16-.29.18-.54.06a6.7 6.7 0 0 1-3.32-2.9c-.25-.43.25-.4.72-1.33.08-.16.04-.3-.02-.43-.06-.12-.55-1.33-.76-1.82-.2-.48-.4-.41-.55-.42h-.47a.9.9 0 0 0-.65.3 2.74 2.74 0 0 0-.86 2.04 4.76 4.76 0 0 0 1 2.53 10.9 10.9 0 0 0 4.18 3.7c1.56.67 2.17.73 2.95.62.48-.07 1.46-.6 1.67-1.18.2-.58.2-1.07.14-1.18-.06-.1-.22-.16-.47-.28Z"/></svg>
+        {s.whatsapp}
+      </a>
+      <a class="btn" href={`mailto:${c.email}`}>{c.email}</a>
+    </div>
+
+    <ul class="links" data-reveal>
+      <li><a href={`mailto:${c.email}`}><span>{s.email}</span><b>{c.email}</b></a></li>
+      <li><a href={c.instagram} target="_blank" rel="noopener"><span>{s.instagram}</span><b dir="ltr">@{handle(c.instagram)}</b></a></li>
+      <li><a href={c.behance} target="_blank" rel="noopener"><span>{s.behance}</span><b dir="ltr">/{handle(c.behance)}</b></a></li>
+    </ul>
+  </div>
+</section>
+
+<style>
+  .contact { position: relative; overflow: hidden; }
+  .contact::before {
+    content: ''; position: absolute; width: 80vmax; height: 80vmax; inset-inline-end: -30vmax; top: -20vmax; z-index: -1;
+    background: radial-gradient(circle, rgba(233, 162, 91, 0.16), transparent 60%);
+  }
+  .title {
+    font-size: clamp(2.3rem, 1.3rem + 5vw, 6rem); line-height: 1.02; letter-spacing: -0.035em;
+    font-weight: 600; max-width: 18ch; margin-top: 1.25rem;
+  }
+  :global(html[lang='ar']) .title { letter-spacing: 0; line-height: 1.3; }
+  .sub { color: var(--muted); margin-top: 1.5rem; }
+  .primary { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 2.5rem; }
+  .wa { font-size: 1.05rem; min-height: 3.75rem; padding-inline: 2rem; }
+  .wa svg { width: 1.4em; height: 1.4em; }
+  @media (max-width: 520px) { .primary .btn { width: 100%; } }
+  .links { list-style: none; margin: clamp(3rem, 8vw, 5rem) 0 0; padding: 0; border-top: 1px solid var(--line); }
+  .links a {
+    display: flex; justify-content: space-between; align-items: center; gap: 1rem;
+    padding: 1.25rem 0; border-bottom: 1px solid var(--line); transition: color 0.3s var(--ease), padding 0.5s var(--ease);
+  }
+  .links span { color: var(--muted); }
+  .links b { font-weight: 500; font-size: clamp(1rem, 0.9rem + 0.6vw, 1.35rem); word-break: break-all; text-align: end; }
+  .links a:hover { color: var(--accent); padding-inline: 0.5rem; }
+</style>

@@ -1,0 +1,15 @@
+name: Check file sizes
+
+# Fails a pull request / push if someone commits a video or file over 10 MB.
+# Long videos belong on YouTube or Vimeo — paste the link in projects.json instead.
+on: [push, pull_request]
+
+jobs:
+  sizes:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: No files over 10 MB
+        run: |
+          big=$(find . -path ./.git -prune -o -path ./node_modules -prune -o -type f -size +10M -print)
+          if [ -n "$big" ]; then echo "These files are over 10 MB — upload long videos to YouTube/Vimeo instead:"; echo "$big"; exit 1; fi

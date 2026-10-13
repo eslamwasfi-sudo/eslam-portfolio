@@ -1,0 +1,34 @@
+---
+// Responsive, optimised image. `src` is a path relative to src/assets (or a full https URL).
+import { Picture } from 'astro:assets';
+import { resolveImage } from '../lib/site';
+
+interface Props {
+  src: string;
+  alt: string;
+  sizes?: string;
+  widths?: number[];
+  class?: string;
+  eager?: boolean;
+}
+const { src, alt, sizes = '100vw', widths = [480, 800, 1200, 1600, 2000], class: cls, eager = false } = Astro.props;
+const img = resolveImage(src);
+const usable = typeof img === 'string' ? [] : widths.filter((w) => w <= img.width);
+if (typeof img !== 'string' && !usable.includes(img.width) && img.width < Math.max(...widths)) usable.push(img.width);
+---
+{typeof img === 'string' ? (
+  <img src={img} alt={alt} class={cls} loading={eager ? 'eager' : 'lazy'} decoding="async" />
+) : (
+  <Picture
+    src={img}
+    alt={alt}
+    widths={usable}
+    sizes={sizes}
+    formats={['avif', 'webp']}
+    quality={72}
+    class={cls}
+    loading={eager ? 'eager' : 'lazy'}
+    decoding="async"
+    fetchpriority={eager ? 'high' : 'auto'}
+  />
+)}

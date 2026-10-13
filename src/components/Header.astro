@@ -1,0 +1,119 @@
+---
+import { ui, type Lang } from '../i18n/ui';
+import { url, switchLangPath } from '../lib/site';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const s = ui[lang];
+const other: Lang = lang === 'ar' ? 'en' : 'ar';
+const home = url(`${lang}/`);
+const links = [
+  ['work', s.nav.work],
+  ['about', s.nav.about],
+  ['services', s.nav.services],
+  ['contact', s.nav.contact],
+] as const;
+---
+<header class="site-header" data-header>
+  <div class="container bar">
+    <a href={home} class="logo">
+      <span class="logo-mark" aria-hidden="true">EW</span>
+      <span class="logo-text">{s.name}</span>
+    </a>
+
+    <nav class="nav" id="site-nav" aria-label="Main">
+      <ul>
+        {links.map(([id, label]) => (
+          <li><a href={`${home}#${id}`} data-nav-link>{label}</a></li>
+        ))}
+      </ul>
+    </nav>
+
+    <div class="actions">
+      <a class="lang" href={switchLangPath(Astro.url.pathname, other)} hreflang={other} lang={other}>
+        {s.otherLangLabel}
+      </a>
+      <button class="menu-btn" type="button" aria-controls="site-nav" aria-expanded="false" data-menu-btn>
+        <span class="sr">{s.menu}</span>
+        <span class="burger" aria-hidden="true"><i></i><i></i></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: fixed; inset-inline: 0; top: 0; z-index: 50;
+    transition: background 0.5s var(--ease), backdrop-filter 0.5s var(--ease), border-color 0.5s var(--ease);
+    border-bottom: 1px solid transparent;
+  }
+  .site-header.scrolled, .site-header.open {
+    background: rgba(11, 11, 12, 0.72);
+    -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+    border-color: var(--line);
+  }
+  .bar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; height: 4.5rem; }
+  .logo { display: inline-flex; align-items: center; gap: 0.7rem; font-weight: 600; letter-spacing: -0.01em; }
+  .logo-mark {
+    display: grid; place-items: center; width: 2.3rem; height: 2.3rem; border-radius: 50%;
+    border: 1px solid var(--accent); color: var(--accent); font-size: 0.75rem; letter-spacing: 0.05em;
+    font-family: var(--font-en);
+  }
+  .logo-text { font-size: 1rem; }
+  .nav ul { list-style: none; margin: 0; padding: 0; display: flex; gap: 2.2rem; }
+  .nav a { position: relative; color: var(--muted); transition: color 0.3s var(--ease); }
+  .nav a:hover { color: var(--text); }
+  .nav a::after {
+    content: ''; position: absolute; inset-inline: 0; bottom: -0.3rem; height: 1px; background: var(--accent);
+    transform: scaleX(0); transition: transform 0.4s var(--ease); transform-origin: var(--origin, left);
+  }
+  :global(html[dir='rtl']) .nav a::after { --origin: right; }
+  .nav a:hover::after { transform: scaleX(1); }
+  .actions { display: flex; align-items: center; gap: 0.5rem; }
+  .lang {
+    display: inline-flex; align-items: center; min-height: 2.6rem; padding: 0.3rem 1rem;
+    border: 1px solid var(--line); border-radius: 999px; font-size: 0.9rem;
+    transition: border-color 0.3s var(--ease), color 0.3s var(--ease);
+  }
+  .lang[lang='ar'] { font-family: var(--font-ar); }
+  .lang[lang='en'] { font-family: var(--font-en); }
+  .lang:hover { border-color: var(--accent); color: var(--accent); }
+  .menu-btn { display: none; width: 2.75rem; height: 2.75rem; border: 1px solid var(--line); border-radius: 50%; background: none; place-items: center; }
+  .burger { display: grid; gap: 5px; width: 16px; }
+  .burger i { display: block; height: 1.5px; background: var(--text); transition: transform 0.4s var(--ease); }
+  .open .burger i:first-child { transform: translateY(3.25px) rotate(45deg); }
+  .open .burger i:last-child { transform: translateY(-3.25px) rotate(-45deg); }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  @media (max-width: 860px) {
+    .menu-btn { display: grid; }
+    .nav {
+      position: fixed; inset: 4.5rem 0 auto 0; height: calc(100dvh - 4.5rem);
+      background: rgba(11, 11, 12, 0.97);
+      padding: 2rem var(--gutter);
+      opacity: 0; visibility: hidden; transform: translateY(-8px);
+      transition: opacity 0.4s var(--ease), transform 0.4s var(--ease), visibility 0.4s;
+    }
+    .open .nav { opacity: 1; visibility: visible; transform: none; }
+    .nav ul { flex-direction: column; gap: 0.25rem; }
+    .nav a { display: block; padding: 0.6rem 0; font-size: clamp(2rem, 9vw, 3rem); color: var(--text); font-weight: 600; }
+    .nav a::after { display: none; }
+  }
+  @media (max-width: 380px) { .logo-text { display: none; } }
+</style>
+
+<script>
+  const header = document.querySelector<HTMLElement>('[data-header]')!;
+  const btn = header.querySelector<HTMLButtonElement>('[data-menu-btn]')!;
+  const onScroll = () => header.classList.toggle('scrolled', window.scrollY > 24);
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+  const setOpen = (open: boolean) => {
+    header.classList.toggle('open', open);
+    btn.setAttribute('aria-expanded', String(open));
+    document.body.style.overflow = open ? 'hidden' : '';
+  };
+  btn.addEventListener('click', () => setOpen(!header.classList.contains('open')));
+  header.querySelectorAll('[data-nav-link]').forEach((a) => a.addEventListener('click', () => setOpen(false)));
+  document.addEventListener('keydown', (e) => e.key === 'Escape' && setOpen(false));
+</script>

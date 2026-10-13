@@ -1,0 +1,14 @@
+{
+  "name_en": "Eslam Wasfi",
+  "name_ar": "إسلام وصفي",
+  "contact": {
+    "whatsapp": "201000000000",
+    "email": "hello@example.com",
+    "instagram": "https://www.instagram.com/your-handle",
+    "behance": "https://www.behance.net/your-handle"
+  },
+  "showreel": {
+    "video": "videos/showreel-loop.mp4",
+    "poster": "showreel-poster.jpg"
+  }
+}

@@ -1,0 +1,78 @@
+---
+import Img from './Img.astro';
+import { ui, type Lang } from '../i18n/ui';
+import { site, url } from '../lib/site';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const s = ui[lang];
+---
+<section class="hero" id="top">
+  <div class="bg" aria-hidden="true">
+    <Img src={site.showreel.poster} alt="" eager sizes="100vw" widths={[640, 960, 1280, 1920]} class="poster" />
+    {site.showreel.video && (
+      <video class="reel" muted loop playsinline preload="none" data-src={url(site.showreel.video)} tabindex="-1"></video>
+    )}
+    <div class="shade"></div>
+  </div>
+
+  <div class="container content">
+    <p class="kicker hero-in" style="--i:0">{s.hero.eyebrow}</p>
+    <h1 class="name hero-in" style="--i:1">{s.name}</h1>
+    <p class="line hero-in" style="--i:2">{s.hero.line}</p>
+    <p class="sub hero-in" style="--i:3">{s.hero.sub}</p>
+    <div class="ctas hero-in" style="--i:4">
+      <a class="btn btn-primary" href="#work">
+        {s.hero.ctaWork}
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14m0 0-6-6m6 6 6-6" fill="none" stroke="currentColor" stroke-width="1.6" /></svg>
+      </a>
+      <a class="btn" href="#contact">{s.hero.ctaContact}</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative; min-height: 100svh; display: flex; align-items: flex-end;
+    padding-block: 7rem clamp(3rem, 8vh, 6rem); overflow: hidden; isolation: isolate;
+  }
+  .bg { position: absolute; inset: 0; z-index: -1; }
+  .bg :global(.poster), .reel { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .reel { opacity: 0; transition: opacity 1.4s var(--ease); }
+  .reel.playing { opacity: 1; }
+  .shade {
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(to top, var(--bg) 0%, rgba(11, 11, 12, 0.55) 45%, rgba(11, 11, 12, 0.25) 100%),
+      radial-gradient(120% 80% at 50% 100%, transparent 40%, rgba(0, 0, 0, 0.5) 100%);
+  }
+  .content { display: grid; gap: 1.25rem; }
+  .name {
+    font-size: clamp(3.4rem, 1.5rem + 11vw, 11rem);
+    line-height: 0.9; letter-spacing: -0.045em; font-weight: 600; margin-top: 0.5rem;
+  }
+  :global(html[lang='ar']) .name { letter-spacing: 0; line-height: 1.15; font-weight: 700; }
+  .line { font-size: clamp(1.25rem, 1rem + 1.4vw, 2.2rem); color: var(--accent); font-weight: 500; line-height: 1.3; }
+  .sub { max-width: 38rem; color: rgba(242, 239, 233, 0.78); }
+  .ctas { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 0.75rem; }
+  @media (max-width: 480px) { .ctas .btn { flex: 1 1 auto; } }
+
+  .hero-in { animation: heroIn 1.2s var(--ease) both; animation-delay: calc(0.15s + var(--i) * 0.1s); }
+  @keyframes heroIn { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+</style>
+
+<script>
+  // Load the showreel loop only after the page has finished loading (keeps the first paint fast),
+  // and never for visitors who asked for reduced motion or data saving.
+  const v = document.querySelector<HTMLVideoElement>('.reel');
+  const conn = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection;
+  const skip = matchMedia('(prefers-reduced-motion: reduce)').matches || conn?.saveData;
+  if (v && !skip) {
+    const start = () => {
+      v.src = v.dataset.src!;
+      v.play().then(() => v.classList.add('playing')).catch(() => {});
+    };
+    if (document.readyState === 'complete') setTimeout(start, 300);
+    else window.addEventListener('load', () => setTimeout(start, 300), { once: true });
+  }
+</script>

@@ -1,0 +1,214 @@
+[
+  {
+    "slug": "oud-noir-ai-film",
+    "todo": true,
+    "category": "ai-video",
+    "title_en": "Oud Noir — AI Fragrance Film",
+    "title_ar": "عود نوار — فيلم عطر بالذكاء الاصطناعي",
+    "client": "TODO: Client name",
+    "year": 2025,
+    "cover": "projects/oud-noir-ai-film/cover.jpg",
+    "video": "videos/showreel-loop.mp4",
+    "video_poster": "",
+    "gallery": [
+      "projects/oud-noir-ai-film/gallery-1.jpg",
+      "projects/oud-noir-ai-film/gallery-2.jpg",
+      "projects/oud-noir-ai-film/gallery-3.jpg"
+    ],
+    "description_en": "A 30-second cinematic fragrance film generated and directed with AI: smoke, amber light and desert textures built shot by shot from a hand-drawn storyboard.",
+    "description_ar": "فيلم عطر سينمائي مدته 30 ثانية تم توليده وإخراجه بالذكاء الاصطناعي: دخان وضوء كهرماني وملامس صحراوية بُنيت لقطة بلقطة انطلاقًا من ستوري بورد مرسوم يدويًا.",
+    "role_en": "Creative direction, AI direction, storyboard, edit",
+    "role_ar": "الإدارة الإبداعية، إخراج الذكاء الاصطناعي، الستوري بورد، المونتاج",
+    "tools": [
+      "Midjourney",
+      "Runway",
+      "Kling",
+      "After Effects",
+      "Premiere Pro"
+    ]
+  },
+  {
+    "slug": "ramadan-nights-ai-spot",
+    "todo": true,
+    "category": "ai-video",
+    "title_en": "Ramadan Nights — AI Spot",
+    "title_ar": "ليالي رمضان — إعلان بالذكاء الاصطناعي",
+    "client": "TODO: Client name",
+    "year": 2025,
+    "cover": "projects/ramadan-nights-ai-spot/cover.jpg",
+    "video": "",
+    "video_poster": "",
+    "gallery": [
+      "projects/ramadan-nights-ai-spot/gallery-1.jpg",
+      "projects/ramadan-nights-ai-spot/gallery-2.jpg",
+      "projects/ramadan-nights-ai-spot/gallery-3.jpg"
+    ],
+    "description_en": "A warm Ramadan social spot mixing AI-generated old-Cairo streets with live-action product shots, cut for Reels, TikTok and YouTube.",
+    "description_ar": "إعلان رمضاني دافئ لمنصات التواصل يمزج شوارع القاهرة القديمة المولَّدة بالذكاء الاصطناعي مع لقطات حقيقية للمنتج، ومُعَدّ بمقاسات ريلز وتيك توك ويوتيوب.",
+    "role_en": "Concept, art direction, AI generation, post-production",
+    "role_ar": "الفكرة، الإدارة الفنية، التوليد بالذكاء الاصطناعي، ما بعد الإنتاج",
+    "tools": [
+      "Midjourney",
+      "Kling",
+      "ElevenLabs",
+      "DaVinci Resolve"
+    ]
+  },
+  {
+    "slug": "coastline-summer-campaign",
+    "todo": true,
+    "category": "campaigns",
+    "title_en": "Coastline — Summer Launch Campaign",
+    "title_ar": "الساحل — حملة إطلاق صيفية",
+    "client": "TODO: Client name",
+    "year": 2024,
+    "cover": "projects/coastline-summer-campaign/cover.jpg",
+    "video": "",
+    "video_poster": "",
+    "gallery": [
+      "projects/coastline-summer-campaign/gallery-1.jpg",
+      "projects/coastline-summer-campaign/gallery-2.jpg",
+      "projects/coastline-summer-campaign/gallery-3.jpg"
+    ],
+    "description_en": "A 360° summer launch campaign: key visual, outdoor, social rollout and a 15-second hero film shot on the North Coast.",
+    "description_ar": "حملة إطلاق صيفية متكاملة: كي فيجوال، وإعلانات خارجية، وخطة نشر على السوشيال، وفيلم رئيسي مدته 15 ثانية مُصوَّر في الساحل الشمالي.",
+    "role_en": "Campaign concept, art direction, shoot supervision",
+    "role_ar": "فكرة الحملة، الإدارة الفنية، الإشراف على التصوير",
+    "tools": [
+      "Photoshop",
+      "Illustrator",
+      "Lightroom",
+      "Premiere Pro"
+    ]
+  },
+  {
+    "slug": "national-day-concept",
+    "todo": true,
+    "category": "campaigns",
+    "title_en": "Gulf National Day — Campaign Concept",
+    "title_ar": "اليوم الوطني الخليجي — فكرة حملة",
+    "client": "TODO: Client name",
+    "year": 2024,
+    "cover": "projects/national-day-concept/cover.jpg",
+    "video": "",
+    "video_poster": "",
+    "gallery": [
+      "projects/national-day-concept/gallery-1.jpg",
+      "projects/national-day-concept/gallery-2.jpg",
+      "projects/national-day-concept/gallery-3.jpg"
+    ],
+    "description_en": "A concept pitch celebrating national pride through heritage patterns and modern typography, with AI-assisted moodboards and key visuals.",
+    "description_ar": "عرض فكرة حملة تحتفي بالفخر الوطني من خلال الزخارف التراثية والتايبوجرافي الحديث، مع مودبورد وكي فيجوال بمساعدة الذكاء الاصطناعي.",
+    "role_en": "Concept, copy direction, key visual",
+    "role_ar": "الفكرة، توجيه النصوص الإعلانية، الكي فيجوال",
+    "tools": [
+      "Midjourney",
+      "Photoshop",
+      "Illustrator"
+    ]
+  },
+  {
+    "slug": "qahwa-house-identity",
+    "todo": true,
+    "category": "branding",
+    "title_en": "Qahwa House — Brand Identity",
+    "title_ar": "بيت القهوة — هوية بصرية",
+    "client": "TODO: Client name",
+    "year": 2024,
+    "cover": "projects/qahwa-house-identity/cover.jpg",
+    "video": "",
+    "video_poster": "",
+    "gallery": [
+      "projects/qahwa-house-identity/gallery-1.jpg",
+      "projects/qahwa-house-identity/gallery-2.jpg",
+      "projects/qahwa-house-identity/gallery-3.jpg"
+    ],
+    "description_en": "A bilingual identity for a specialty coffee house: Arabic–Latin logotype, warm palette, packaging and menu system.",
+    "description_ar": "هوية بصرية ثنائية اللغة لمقهى قهوة مختصة: شعار نصي عربي ولاتيني، وألوان دافئة، ونظام تغليف وقوائم طعام.",
+    "role_en": "Brand identity, logo design, packaging",
+    "role_ar": "الهوية البصرية، تصميم الشعار، التغليف",
+    "tools": [
+      "Illustrator",
+      "Photoshop",
+      "InDesign"
+    ]
+  },
+  {
+    "slug": "sahar-fashion-label",
+    "todo": true,
+    "category": "branding",
+    "title_en": "Sahar — Fashion Label Branding",
+    "title_ar": "سحر — هوية علامة أزياء",
+    "client": "TODO: Client name",
+    "year": 2023,
+    "cover": "projects/sahar-fashion-label/cover.jpg",
+    "video": "",
+    "video_poster": "",
+    "gallery": [
+      "projects/sahar-fashion-label/gallery-1.jpg",
+      "projects/sahar-fashion-label/gallery-2.jpg",
+      "projects/sahar-fashion-label/gallery-3.jpg"
+    ],
+    "description_en": "Brand identity and lookbook art direction for a modest-fashion label, from logo and tags to e-commerce product styling.",
+    "description_ar": "هوية بصرية وإدارة فنية لكتالوج علامة أزياء محتشمة، من الشعار والبطاقات حتى تنسيق صور المنتجات للمتجر الإلكتروني.",
+    "role_en": "Branding, lookbook art direction, e-commerce styling",
+    "role_ar": "الهوية، الإدارة الفنية للكتالوج، تنسيق صور المتجر",
+    "tools": [
+      "Illustrator",
+      "Photoshop",
+      "Lightroom"
+    ]
+  },
+  {
+    "slug": "perfume-bottle-previz",
+    "todo": true,
+    "category": "3d",
+    "title_en": "Perfume Bottle — 3D Product Previz",
+    "title_ar": "زجاجة عطر — معاينة منتج ثلاثية الأبعاد",
+    "client": "TODO: Client name",
+    "year": 2025,
+    "cover": "projects/perfume-bottle-previz/cover.jpg",
+    "video": "",
+    "video_poster": "",
+    "gallery": [
+      "projects/perfume-bottle-previz/gallery-1.jpg",
+      "projects/perfume-bottle-previz/gallery-2.jpg",
+      "projects/perfume-bottle-previz/gallery-3.jpg"
+    ],
+    "description_en": "3D previsualisation of a perfume bottle launch: lighting studies, camera moves and hero frames approved before the shoot day.",
+    "description_ar": "تصوّر مسبق ثلاثي الأبعاد لإطلاق زجاجة عطر: دراسات إضاءة وحركات كاميرا ولقطات رئيسية تم اعتمادها قبل يوم التصوير.",
+    "role_en": "Previz, lighting direction, look development",
+    "role_ar": "التصوّر المسبق، توجيه الإضاءة، تطوير الشكل النهائي",
+    "tools": [
+      "Blender",
+      "Cinema 4D",
+      "Redshift"
+    ]
+  },
+  {
+    "slug": "launch-event-stage-previz",
+    "todo": true,
+    "category": "3d",
+    "title_en": "Launch Event — Stage Previz",
+    "title_ar": "حدث إطلاق — تصوّر مسبق للمسرح",
+    "client": "TODO: Client name",
+    "year": 2023,
+    "cover": "projects/launch-event-stage-previz/cover.jpg",
+    "video": "",
+    "video_poster": "",
+    "gallery": [
+      "projects/launch-event-stage-previz/gallery-1.jpg",
+      "projects/launch-event-stage-previz/gallery-2.jpg",
+      "projects/launch-event-stage-previz/gallery-3.jpg"
+    ],
+    "description_en": "Stage and screen-content previz for a product launch event, letting the client walk through the space before build.",
+    "description_ar": "تصوّر مسبق للمسرح ومحتوى الشاشات لحدث إطلاق منتج، يتيح للعميل التجوّل في المكان قبل التنفيذ.",
+    "role_en": "Art direction, 3D previz, screen content",
+    "role_ar": "الإدارة الفنية، التصوّر المسبق ثلاثي الأبعاد، محتوى الشاشات",
+    "tools": [
+      "Blender",
+      "After Effects",
+      "Unreal Engine"
+    ]
+  }
+]

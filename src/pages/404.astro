@@ -1,0 +1,21 @@
+---
+import Base from '../layouts/Base.astro';
+import { ui } from '../i18n/ui';
+import { url } from '../lib/site';
+---
+<Base lang="ar" title="404">
+  <section class="container nf">
+    <p class="kicker">404</p>
+    <h1 class="h-section">{ui.ar.notFound.title}</h1>
+    <p lang="en" dir="ltr" class="en">{ui.en.notFound.title}</p>
+    <div class="row">
+      <a class="btn btn-primary" href={url('ar/')}>{ui.ar.notFound.back}</a>
+      <a class="btn" href={url('en/')} lang="en">{ui.en.notFound.back}</a>
+    </div>
+  </section>
+</Base>
+<style>
+  .nf { min-height: 80svh; display: grid; align-content: center; gap: 1.25rem; padding-top: 6rem; }
+  .en { color: var(--muted); font-family: var(--font-en); }
+  .row { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1rem; }
+</style>

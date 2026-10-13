@@ -1,0 +1,23 @@
+---
+// The root URL sends visitors to the Arabic version (the default language).
+import { url } from '../lib/site';
+const target = url('ar/');
+---
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>إسلام وصفي — Eslam Wasfi</title>
+    <meta http-equiv="refresh" content={`0; url=${target}`} />
+    <link rel="canonical" href={new URL(target, Astro.site).href} />
+    <meta name="robots" content="noindex" />
+    <meta property="og:title" content="Eslam Wasfi — Art Director & AI Creative Director" />
+    <meta property="og:image" content={new URL(url('og-image.jpg'), Astro.site).href} />
+    <script is:inline define:vars={{ target }}>location.replace(target + location.hash);</script>
+    <style>body{background:#0b0b0c;color:#f2efe9;font-family:system-ui,sans-serif}</style>
+  </head>
+  <body>
+    <p><a href={target}>العربية</a> · <a href={url('en/')}>English</a></p>
+  </body>
+</html>

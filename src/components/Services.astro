@@ -1,0 +1,48 @@
+---
+import { ui, type Lang } from '../i18n/ui';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const s = ui[lang].services;
+---
+<section class="section services" id="services">
+  <div class="container">
+    <div class="section-head" data-reveal>
+      <p class="kicker">{s.kicker}</p>
+      <h2 class="h-section">{s.title}</h2>
+    </div>
+    <ol class="list">
+      {s.items.map(([title, text], i) => (
+        <li data-reveal>
+          <span class="num">0{i + 1}</span>
+          <h3>{title}</h3>
+          <p>{text}</p>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .services { background: var(--bg-2); }
+  .list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+  li {
+    position: relative; display: grid; gap: 0.75rem; padding: clamp(1.75rem, 4vw, 2.75rem) 0;
+    border-bottom: 1px solid var(--line);
+  }
+  li::before {
+    content: ''; position: absolute; inset-inline-start: 0; top: -1px; height: 1px; width: 100%;
+    background: var(--accent); transform: scaleX(0); transform-origin: var(--o, left);
+    transition: transform 0.9s var(--ease);
+  }
+  :global(html[dir='rtl']) li::before { --o: right; }
+  li:hover::before { transform: scaleX(1); }
+  @media (min-width: 860px) {
+    li { grid-template-columns: 5rem 1fr 1.2fr; align-items: baseline; gap: 2rem; }
+  }
+  .num { font-family: var(--font-en); color: var(--accent); font-size: 0.9rem; }
+  h3 { font-size: clamp(1.5rem, 1.1rem + 1.8vw, 2.6rem); font-weight: 500; line-height: 1.15; letter-spacing: -0.02em; transition: color 0.4s var(--ease); }
+  :global(html[lang='ar']) h3 { letter-spacing: 0; line-height: 1.4; }
+  li:hover h3 { color: var(--accent); }
+  p { color: var(--muted); max-width: 34rem; }
+</style>
