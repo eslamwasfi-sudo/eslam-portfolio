@@ -51,6 +51,7 @@ const personLd = {
     <meta name="description" content={desc} />
     <meta name="theme-color" content="#0b0b0c" />
     <meta name="author" content={site.name_en} />
+    {!site.indexing && <meta name="robots" content="noindex, nofollow" />}
     <link rel="canonical" href={canonical} />
     <link rel="alternate" hreflang={lang} href={canonical} />
     <link rel="alternate" hreflang={other} href={altHref(other)} />

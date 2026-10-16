@@ -29,6 +29,10 @@ Open **`src/data/site.json`** and replace the placeholders:
   Egypt `+20 100 123 4567` → `201001234567`. Saudi `+966 50 123 4567` → `966501234567`.
 - The pre-filled WhatsApp message is in `src/i18n/ui.ts` (`whatsappMsg`), with one version in Arabic and one in English.
 
+### Hide the site from Google (temporarily)
+In `src/data/site.json`, `"indexing": false` tells Google and other search engines not to list the site.
+The site still works for anyone who has the link. Set it to `true` once your real work and contact details are in.
+
 ## 2. Add a new project
 
 **Step 1: Add the images.**
