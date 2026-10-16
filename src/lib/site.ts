@@ -15,6 +15,7 @@ export interface Project {
   year: number | string;
   cover: string;
   video?: string;
+  video_file?: string;
   video_poster?: string;
   gallery?: string[];
   description_en: string;
@@ -24,7 +25,18 @@ export interface Project {
   tools?: string[];
 }
 
-export const projects = projectsData as Project[];
+// Normalise what the admin panel may save (empty strings, empty list items).
+export const projects = (projectsData as Project[]).map((p) => ({
+  ...p,
+  gallery: (p.gallery ?? []).filter(Boolean),
+  tools: (p.tools ?? []).filter(Boolean),
+}));
+
+const seen = new Set<string>();
+for (const p of projects) {
+  if (seen.has(p.slug)) throw new Error(`[portfolio] Two projects use the slug "${p.slug}". Each project needs its own slug.`);
+  seen.add(p.slug);
+}
 
 export const t = (p: Project, field: 'title' | 'description' | 'role', lang: Lang) =>
   p[`${field}_${lang}`];

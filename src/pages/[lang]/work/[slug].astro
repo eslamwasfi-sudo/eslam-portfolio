@@ -21,6 +21,7 @@ const lang = Astro.params.lang as Lang;
 const s = ui[lang];
 const title = t(p, 'title', lang);
 const description = t(p, 'description', lang);
+const video = p.video_file || p.video;
 
 // Social share image: a 1200×630 crop of the cover.
 const coverImg = resolveImage(p.cover);
@@ -67,9 +68,9 @@ const meta = [
       <p class="desc" data-reveal>{description}</p>
     </div>
 
-    {p.video && (
+    {video && (
       <div class="container wide" data-reveal>
-        <VideoPlayer video={p.video} poster={p.video_poster || p.cover} title={title} playLabel={s.project.play} />
+        <VideoPlayer video={video} poster={p.video_poster || p.cover} title={title} playLabel={s.project.play} />
       </div>
     )}
 

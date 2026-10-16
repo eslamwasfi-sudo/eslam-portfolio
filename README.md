@@ -7,8 +7,42 @@ Built with [Astro](https://astro.build) as a static site and published on GitHub
 - English (left-to-right): `/en/`
 - Live site: **https://eslamwasfi-sudo.github.io/eslam-portfolio/**
 
-Every push to the `main` branch rebuilds and republishes the site automatically (about 1–2 minutes).
-You can edit everything below straight on github.com, with no software to install.
+Every change on the `main` branch rebuilds and republishes the site automatically (about 1–2 minutes).
+
+**Easiest way to update the site: the admin panel** (section 0 below). You can also edit the files
+directly on github.com (sections 1–6), with no software to install.
+
+---
+
+## 0. Admin panel: لوحة التحكم
+
+Open **https://eslamwasfi-sudo.github.io/eslam-portfolio/admin/** on your phone or computer.
+
+### First time only: create your access key (token)
+The panel signs in with a GitHub "personal access token". It works like a password that can only edit this one repository.
+
+1. Sign in to GitHub and open **https://github.com/settings/personal-access-tokens/new**
+2. **Token name**: `portfolio admin`. **Expiration**: pick a date (up to one year; you'll make a new key when it expires).
+3. **Repository access** → **Only select repositories** → choose **eslam-portfolio**.
+4. **Permissions** → **Repository permissions** → **Contents** → **Read and write**.
+5. Click **Generate token** and copy the key (it starts with `github_pat_`). GitHub shows it only once.
+6. In the admin panel, choose **Sign In Using Access Token**, paste the key, and sign in.
+   Your browser remembers you, so you won't need the key again on that device.
+
+**Never share this key or paste it anywhere else.** If you lose it or think someone saw it,
+delete it at https://github.com/settings/personal-access-tokens and make a new one.
+
+### Using the panel
+- **المشاريع · Projects** → **All projects**: the full list in site order. Use **Add** to add a project at the top,
+  open one to edit it, drag to reorder, or remove it. Upload the cover and gallery images straight from your phone.
+  Images are resized and converted to WebP automatically before saving.
+- **الإعدادات والتواصل · Settings & Contact**: WhatsApp, email, Instagram, Behance, the hero showreel loop,
+  and the **Show site on Google** switch.
+- Click **Save**. The site updates about 2 minutes later.
+- If a save breaks the build (very rare, e.g. a broken image), the live site simply stays on the previous version.
+  Check the **Actions** tab on GitHub, or ask for help.
+
+Text that isn't in the panel (About, Services, buttons) lives in `src/i18n/ui.ts` (section 4).
 
 ---
 
@@ -61,12 +95,13 @@ Copy one existing block `{ ... }`, paste it where you want it in the list, and e
   "title_ar": "مشروعي الجديد",
   "client": "Brand Name",
   "year": 2026,
-  "cover": "projects/my-new-project/cover.jpg",
+  "cover": "/projects/my-new-project/cover.jpg",
   "video": "https://www.youtube.com/watch?v=XXXXXXXXXXX",
+  "video_file": "",
   "video_poster": "",
   "gallery": [
-    "projects/my-new-project/gallery-1.jpg",
-    "projects/my-new-project/gallery-2.jpg"
+    "/projects/my-new-project/gallery-1.jpg",
+    "/projects/my-new-project/gallery-2.jpg"
   ],
   "description_en": "One or two sentences about the idea and the result.",
   "description_ar": "جملة أو جملتان عن الفكرة والنتيجة.",
@@ -80,8 +115,9 @@ Copy one existing block `{ ... }`, paste it where you want it in the list, and e
 |---|---|
 | `slug` | The web address of the project: lowercase, hyphens, no spaces (`/en/work/my-new-project/`). Must be unique. |
 | `category` | One of: `ai-video`, `campaigns`, `branding`, `3d` (AI Video, Campaigns & Concepts, Graphic Design & Branding, 3D / Previz). |
-| `cover` | Path to the cover image, **relative to `src/assets/`**. |
-| `video` | A YouTube or Vimeo link (any normal share link works), a short local loop such as `videos/my-loop.mp4`, or `""` for no video. |
+| `cover` | Path to the cover image **inside `src/assets/`**, e.g. `/projects/my-new-project/cover.jpg`. |
+| `video` | A YouTube or Vimeo link (any normal share link works), or `""`. |
+| `video_file` | Instead of a link: a short muted loop in `public/videos/`, e.g. `/videos/my-loop.mp4`. Leave `""` if you use `video`. |
 | `video_poster` | Optional image shown before the video plays. If left empty, the cover is used. |
 | `gallery` | Any number of images, or `[]`. The first image is shown full width. |
 | `todo` | Only on the placeholder projects. It shows the orange **TODO** badge. Delete this line on real projects. |
@@ -100,7 +136,7 @@ GitHub rejects files over 100 MB, and big files make the site slow. So:
 - **Long videos, showreels and films** → upload to **YouTube** (Unlisted is fine) or **Vimeo**, then paste the link into `video`.
   The site shows a lightweight poster with a play button, and the player only loads when someone taps it. This keeps the site fast.
 - **Local `.mp4`** → only for **short, silent loops under 10 MB** (about 5–10 s at 720p or 1080p). Put them in `public/videos/`
-  and write `"video": "videos/name.mp4"`. They play muted on loop and only start when scrolled into view.
+  and write `"video_file": "/videos/name.mp4"`. They play muted on loop and only start when scrolled into view.
   A safety check (`check-videos.yml`) stops any commit containing a file over 10 MB.
 
 Recommended export for a loop: H.264 MP4, 1280×720 or 1920×1080, no audio, 2–4 Mbps.

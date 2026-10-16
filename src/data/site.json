@@ -9,7 +9,7 @@
     "behance": "https://www.behance.net/your-handle"
   },
   "showreel": {
-    "video": "videos/showreel-loop.mp4",
-    "poster": "showreel-poster.jpg"
+    "video": "/videos/showreel-loop.mp4",
+    "poster": "/showreel-poster.jpg"
   }
 }

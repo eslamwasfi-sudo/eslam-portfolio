@@ -1,0 +1,189 @@
+# Admin panel (Sveltia CMS) — open https://eslamwasfi-sudo.github.io/eslam-portfolio/admin/
+# Every "Save" creates a commit on main, which republishes the site in ~2 minutes.
+
+backend:
+  name: github
+  repo: eslamwasfi-sudo/eslam-portfolio
+  branch: main
+  auth_methods: [token]   # sign in with a GitHub personal access token (no server needed)
+  commit_messages:
+    update: "Update {{collection}} “{{slug}}” from admin panel"
+    uploadMedia: "Upload “{{path}}” from admin panel"
+    deleteMedia: "Delete “{{path}}” from admin panel"
+
+app_title: لوحة تحكم إسلام وصفي
+site_url: https://eslamwasfi-sudo.github.io/eslam-portfolio/ar/
+logo_url: https://eslamwasfi-sudo.github.io/eslam-portfolio/favicon.svg
+
+# Images are stored in src/assets/projects and optimised again at build time.
+media_folder: src/assets/projects
+public_folder: /projects
+
+media_libraries:
+  default:
+    config:
+      max_file_size: 31457280   # 30 MB
+      slugify_filename: true
+      transformations:
+        raster_image:
+          format: webp
+          quality: 88
+          width: 2400
+          height: 2400
+
+collections:
+  # ───────────────────────── Projects ─────────────────────────
+  - name: work
+    label: "المشاريع · Projects"
+    icon: photo_library
+    files:
+      - name: projects
+        label: "كل المشاريع · All projects"
+        file: src/data/projects.json
+        format: json
+        fields:
+          - name: projects
+            label: "المشاريع (الترتيب هنا = الترتيب على الموقع) · Projects (order = order on site)"
+            label_singular: "مشروع · Project"
+            widget: list
+            root: true
+            add_to_top: true
+            collapsed: true
+            summary: "{{title_ar}} — {{title_en}} ({{year}})"
+            fields:
+              - name: title_ar
+                label: "العنوان بالعربي · Title (Arabic)"
+                widget: string
+              - name: title_en
+                label: "العنوان بالإنجليزي · Title (English)"
+                widget: string
+              - name: slug
+                label: "رابط الصفحة · URL slug"
+                widget: string
+                hint: "حروف إنجليزي صغيرة وشرطة بس، ومينفعش يتكرر. مثال: oud-noir-film — lowercase letters, numbers and hyphens, must be unique."
+                pattern: ['^[a-z0-9]+(?:-[a-z0-9]+)*$', "حروف إنجليزي صغيرة وأرقام وشرطة (-) بس — lowercase letters, numbers, hyphens only"]
+              - name: category
+                label: "التصنيف · Category"
+                widget: select
+                options:
+                  - { value: ai-video, label: "فيديو بالذكاء الاصطناعي · AI Video" }
+                  - { value: campaigns, label: "حملات وأفكار إبداعية · Campaigns & Concepts" }
+                  - { value: branding, label: "تصميم جرافيك وهويات · Graphic Design & Branding" }
+                  - { value: 3d, label: "ثلاثي الأبعاد / تصوّر مسبق · 3D / Previz" }
+              - name: client
+                label: "العميل · Client"
+                widget: string
+              - name: year
+                label: "السنة · Year"
+                widget: number
+                value_type: int
+                min: 2000
+                max: 2100
+              - name: cover
+                label: "صورة الغلاف · Cover image"
+                widget: image
+                hint: "صورة عرضية، يفضّل 2000 بكسل عرض أو أكتر — landscape, ideally 2000px+ wide."
+              - name: video
+                label: "رابط فيديو يوتيوب أو فيميو · YouTube / Vimeo link"
+                widget: string
+                required: false
+                hint: "الصق لينك الفيديو زي ما هو. الفيديوهات الطويلة لازم تترفع على يوتيوب (ممكن Unlisted) أو فيميو — paste any YouTube/Vimeo link."
+              - name: video_file
+                label: "أو لوب قصير صامت mp4 · Or a short muted mp4 loop"
+                widget: file
+                required: false
+                accept: video/mp4,video/webm
+                choose_url: false
+                media_folder: /public/videos
+                public_folder: /videos
+                hint: "بس للوبات القصيرة الصامتة أقل من 10 ميجا. لو حطيت لينك يوتيوب فوق، سيب ده فاضي — short muted loops under 10 MB only."
+                media_libraries:
+                  default:
+                    config:
+                      max_file_size: 10485760
+              - name: video_poster
+                label: "صورة قبل تشغيل الفيديو (اختياري) · Video poster (optional)"
+                widget: image
+                required: false
+                hint: "لو سبتها فاضية هتظهر صورة الغلاف — leave empty to use the cover."
+              - name: gallery
+                label: "معرض الصور · Gallery"
+                label_singular: "صورة · Image"
+                widget: list
+                required: false
+                field: { name: image, label: "صورة · Image", widget: image }
+                hint: "أول صورة بتظهر بعرض الصفحة كله — the first image is shown full width."
+              - name: description_ar
+                label: "الوصف بالعربي · Description (Arabic)"
+                widget: text
+              - name: description_en
+                label: "الوصف بالإنجليزي · Description (English)"
+                widget: text
+              - name: role_ar
+                label: "دوري بالعربي · Role (Arabic)"
+                widget: string
+              - name: role_en
+                label: "دوري بالإنجليزي · Role (English)"
+                widget: string
+              - name: tools
+                label: "الأدوات · Tools"
+                label_singular: "أداة · Tool"
+                widget: list
+                required: false
+                field: { name: tool, label: "أداة · Tool", widget: string }
+              - name: todo
+                label: "مشروع مؤقت (يظهر عليه TODO) · Placeholder (shows TODO badge)"
+                widget: boolean
+                required: false
+                default: false
+                hint: "اقفلها لما تحط شغلك الحقيقي — turn off once real content is in."
+
+  # ───────────────────────── Site settings ─────────────────────────
+  - name: settings
+    label: "الإعدادات والتواصل · Settings & Contact"
+    icon: settings
+    files:
+      - name: site
+        label: "بيانات التواصل والإعدادات · Contact & settings"
+        file: src/data/site.json
+        format: json
+        fields:
+          - { name: name_en, label: "الاسم بالإنجليزي · Name (English)", widget: string }
+          - { name: name_ar, label: "الاسم بالعربي · Name (Arabic)", widget: string }
+          - name: indexing
+            label: "إظهار الموقع في جوجل · Show site on Google"
+            widget: boolean
+            hint: "اقفلها لو مش عايز الموقع يظهر في نتايج البحث لسه — off = hidden from search engines."
+          - name: contact
+            label: "التواصل · Contact"
+            widget: object
+            fields:
+              - name: whatsapp
+                label: "رقم الواتساب · WhatsApp number"
+                widget: string
+                hint: "بالصيغة الدولية أرقام بس من غير + ولا مسافات. مصر: 201001234567 — السعودية: 966501234567"
+                pattern: ['^[0-9]{8,15}$', "أرقام بس بالصيغة الدولية، من غير + — digits only, international format"]
+              - { name: email, label: "الإيميل · Email", widget: string, pattern: ['^[^@\s]+@[^@\s]+\.[^@\s]+$', "إيميل غير صحيح — invalid email"] }
+              - { name: instagram, label: "لينك إنستجرام · Instagram URL", widget: string, pattern: ['^https?://', "لازم يبدأ بـ https:// — must start with https://"] }
+              - { name: behance, label: "لينك بيهانس · Behance URL", widget: string, pattern: ['^https?://', "لازم يبدأ بـ https:// — must start with https://"] }
+          - name: showreel
+            label: "فيديو الخلفية في أول الصفحة · Hero showreel"
+            widget: object
+            fields:
+              - name: video
+                label: "لوب صامت قصير mp4 · Short muted loop (mp4)"
+                widget: file
+                accept: video/mp4,video/webm
+                choose_url: false
+                media_folder: /public/videos
+                public_folder: /videos
+                hint: "5–10 ثواني، من غير صوت، أقل من 10 ميجا — 5–10 s, no audio, under 10 MB."
+                media_libraries:
+                  default:
+                    config:
+                      max_file_size: 10485760
+              - name: poster
+                label: "صورة تظهر لحد ما الفيديو يشتغل · Poster image"
+                widget: image
+                media_folder: /src/assets
+                public_folder: /
